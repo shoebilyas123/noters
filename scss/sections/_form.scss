@@ -1,0 +1,53 @@
+@use '../components/mixins' as *;
+@use '../components/variables' as *;
+
+.new-folder-modal,
+.new-note-modal,
+.delete-confirm {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background: rgba($folder-blue, 0.5);
+  @include flex-design(row, center, center);
+  .create-form {
+    @include flex-design(column, start, start);
+    width: 427px;
+    height: fit-content;
+    background: $light-gray;
+    border-radius: 5px;
+    border: 1px solid $light-gray-border;
+    padding: 15px;
+    box-shadow: 0 0 15px $shadow-black;
+    h3,
+    h2 {
+      font-weight: 500;
+    }
+    &--header {
+      text-align: center;
+      width: 100%;
+      border-bottom: 1px solid $light-gray-border-2;
+      margin-bottom: 15px;
+      h2 {
+        font-weight: 400;
+      }
+    }
+    #folder-name,
+    #note-name,
+    #note-select {
+      margin-top: 5px;
+      width: 100%;
+      padding: 5px;
+      border: 1px solid $gen-gray;
+      border-radius: 3.5px;
+      outline: none;
+      background: $app-white;
+    }
+    #folder-name,
+    #note-name {
+      margin-bottom: 7.5px;
+    }
+    .buttons {
+      margin-top: 15px;
+    }
+  }
+}

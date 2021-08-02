@@ -1,0 +1,13 @@
+@use '../scss/components/typography';
+@use '../scss/components/mixins';
+@use '../scss/components/buttons';
+@use '../scss/components/variables';
+
+//USE COMPONENTS
+@use './sections/app-container';
+@use './sections/sidebar';
+@use './sections/tabs';
+@use './sections/main-header';
+@use './sections/main-address-bar';
+@use './sections/main-notes-collection';
+@use './sections/form';

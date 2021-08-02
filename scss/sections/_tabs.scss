@@ -1,0 +1,87 @@
+@use '../components/mixins' as *;
+@use '../components/variables' as *;
+
+.sidebar {
+  &--tabs {
+    @include flex-design(column, space-between, center);
+    width: 100%;
+    .tab {
+      @include flex-design(row, space-between, center);
+      width: 100%;
+      &:hover {
+        background: $light-gray-border;
+        cursor: pointer;
+      }
+      h3 {
+        font-weight: 400;
+      }
+      .general {
+        margin: 5px 5px;
+        @include flex-design(row, space-evenly, center);
+      }
+      .color {
+        @include create-circle(25px);
+        background: $folder-red;
+        margin-right: 5px;
+      }
+      .more {
+        @include flex-design(column, center, center);
+        height: 30%;
+        width: 5%;
+        position: relative;
+        .circle {
+          @include create-circle(5px);
+          background: $app-black;
+          margin-bottom: 1px;
+        }
+        .hidden {
+          display: none;
+        }
+        &:hover {
+          cursor: pointer;
+        }
+        &--options {
+          position: absolute;
+          top: -50%;
+          transform: translateX(65%);
+          background: $button-gray;
+          color: $app-black;
+          width: 5rem;
+          border-radius: 5px;
+          box-shadow: 0px 0px 2px $app-black;
+          overflow: hidden;
+          border: none;
+
+          .separator {
+            width: 90%;
+            margin: 2 auto;
+            border-bottom: 1px solid $very-light-gray;
+          }
+          .option {
+            width: 100%;
+            padding: 2px 5px;
+            &:hover {
+              background: linear-gradient(
+                to bottom,
+                rgba($button-gray, 1),
+                rgba($light-gray, 1)
+              );
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      &--selected {
+        background: $hover-button-black;
+        color: $app-white;
+        &:hover {
+          background: $hover-button-black !important;
+          color: $app-white;
+        }
+        .more .circle {
+          background: $button-gray;
+        }
+      }
+    }
+  }
+}

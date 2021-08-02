@@ -1,0 +1,16 @@
+@mixin flex-design($alignment, $justify, $align) {
+  display: flex;
+  flex-direction: $alignment !important;
+  justify-content: $justify !important;
+  align-items: $align !important;
+}
+
+@mixin create-circle($radius) {
+  width: $radius;
+  height: $radius;
+  border-radius: 50%;
+}
+
+@mixin border-red {
+  border: 1px solid red;
+}
