@@ -451,6 +451,8 @@ const controlLocalStorage = function () {
   });
 };
 window.addEventListener("load", controlLocalStorage);
+// window.addEventListener("load", controlEmptySidebar);
+// const controlEmptySidebar = function () {};
 const controlCreateFolderForm = function () {
   _viewsFormViewDefault.default.clearForm();
   _viewsFormViewDefault.default.createFolderForm();
@@ -512,6 +514,7 @@ const controlCreateNote = function (e) {
     folderLocation
   };
   _modelsModel.addToNotesBookmarks(noteState);
+  _viewsFoldersViewDefault.default.renderFolderNote(noteState);
   _viewsFormViewDefault.default.clearForm();
 };
 const controlCreateNoteForm = function (e) {
@@ -522,18 +525,27 @@ const controlCreateNoteForm = function (e) {
   _viewsFormViewDefault.default.formCancellation(formCancelButton);
   _viewsFormViewDefault.default.addHandlerCreateNew(controlCreateNote);
 };
+const controlFolderDelete = function (e) {
+  const para = e.target.closest(".address-bar").querySelector("p").innerText;
+  const folderName = para.slice(para.lastIndexOf("> ") + 1, para.length);
+  const savedFolders = _modelsModel.state.folders_bookmarks;
+  savedFolders.splice(savedFolders.indexOf(folderName), 1);
+  _modelsModel.state.folders_bookmarks = savedFolders;
+  console.log(_modelsModel.state.folders_bookmarks);
+};
 const init = function () {
   // sidebarView.renderEmptyImage();
   _viewsCreateFolderViewDefault.default.addHandlerCreateFolder(controlCreateFolderForm);
   _viewsSibebarViewDefault.default.changeTabEventListener();
-  _viewsSibebarViewDefault.default.eventListenerToggleMoreOptions();
+  // sidebarView.eventListenerToggleMoreOptions();
   _viewsSibebarViewDefault.default.addHandlerTabClick(controlFolder);
   _viewsFoldersViewDefault.default.addHandlerNotesClick(controlNote);
   _viewsCreateNoteViewDefault.default.addHandlerCreateNew(controlCreateNoteForm);
+  _viewsFoldersViewDefault.default.addHandlerDeleteButton(controlFolderDelete);
 };
 init();
 
-},{"../models/model":"34Jm7","../views/formView":"yqQiy","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","../views/createFolderView":"4isxj","../views/sibebarView":"3DEE0","../views/foldersView":"7b1QR","../views/createNoteView":"U7eNO"}],"34Jm7":[function(require,module,exports) {
+},{"../models/model":"34Jm7","../views/createFolderView":"4isxj","../views/formView":"yqQiy","../views/sibebarView":"3DEE0","../views/foldersView":"7b1QR","../views/createNoteView":"U7eNO","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"34Jm7":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
 _parcelHelpers.defineInteropFlag(exports);
 _parcelHelpers.export(exports, "state", function () {
@@ -667,7 +679,40 @@ exports.export = function (dest, destName, get) {
     get: get
   });
 };
-},{}],"yqQiy":[function(require,module,exports) {
+},{}],"4isxj":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+class createFolderView {
+  _parentElement = document.querySelector(".new-folder");
+  addHandlerCreateFolder(handler) {
+    this._parentElement.addEventListener("click", handler);
+  }
+  _generateNewTabMarkup(data) {
+    return `<div class="tab">
+    <div class="general">
+      <div class="color"></div>
+      <h3 class="name">${data}</h3>
+    </div>
+    <!-- <div class="more">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+    </div> -->
+  </div>`;
+  }
+  createNewFolderTab(data) {
+    const markup = this._generateNewTabMarkup(data);
+    const sidebarTabs = this._parentElement.closest(".app-container").querySelector(".sidebar--tabs");
+    const sidebarEmpty = sidebarTabs.querySelector(".sidebar--tabs--empty");
+    if (!sidebarEmpty.classList.contains(`hidden`)) {
+      sidebarEmpty.classList.add(`hidden`);
+    }
+    sidebarTabs.insertAdjacentHTML("beforeend", markup);
+  }
+}
+exports.default = new createFolderView();
+
+},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"yqQiy":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
 _parcelHelpers.defineInteropFlag(exports);
 class formView {
@@ -756,40 +801,14 @@ class formView {
 }
 exports.default = new formView();
 
-},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"4isxj":[function(require,module,exports) {
-var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
-_parcelHelpers.defineInteropFlag(exports);
-class createFolderView {
-  _parentElement = document.querySelector(".new-folder");
-  addHandlerCreateFolder(handler) {
-    this._parentElement.addEventListener("click", handler);
-  }
-  _generateNewTabMarkup(data) {
-    return `<div class="tab">
-    <div class="general">
-      <div class="color"></div>
-      <h3 class="name">${data}</h3>
-    </div>
-    <div class="more">
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-    </div>
-  </div>`;
-  }
-  createNewFolderTab(data) {
-    const markup = this._generateNewTabMarkup(data);
-    const sidebarTabs = this._parentElement.closest(".app-container").querySelector(".sidebar--tabs");
-    sidebarTabs.insertAdjacentHTML("beforeend", markup);
-  }
-}
-exports.default = new createFolderView();
-
 },{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"3DEE0":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
 _parcelHelpers.defineInteropFlag(exports);
 class sidebarView {
   _parentElement = document.querySelector(".sidebar");
+  getSidebarTabClass() {
+    return this._parentElement.querySelector("sidebar--empty");
+  }
   changeTab(e) {
     if (!e.target.classList.contains("tab") && !e.target.classList.contains("name")) return;
     const tabCurrent = e.target.closest(".tab");
@@ -841,6 +860,7 @@ class foldersView {
   changeLocationAddress(data) {
     const address = this._parentElement.querySelector(`.address-bar`);
     address.querySelector("p").textContent = `My Notes > ${data.name}`;
+    address.querySelector(".buttons").classList.remove("changeOpacity");
   }
   _generateFolderDataMarkup(data) {
     return `<div class="note">
@@ -856,6 +876,12 @@ class foldersView {
         </div>
       </div>
     </div>`;
+  }
+  renderFolderNote(data) {
+    console.log(data);
+    const folderElement = this._parentElement.querySelector(".notes-collection");
+    const markup = this._generateFolderDataMarkup(data);
+    folderElement.insertAdjacentHTML("beforeend", markup);
   }
   renderFolderData(folderData) {
     const folderElement = this._parentElement.querySelector(".notes-collection");
@@ -900,6 +926,10 @@ class foldersView {
   addHandlerNotesClick(handler) {
     const notesFolder = this._parentElement.querySelector(".notes-collection");
     notesFolder.addEventListener("click", handler);
+  }
+  addHandlerDeleteButton(handler) {
+    const deleteButton = this._parentElement.querySelector(".address-bar").querySelector(".delete");
+    deleteButton.addEventListener("click", handler);
   }
 }
 exports.default = new foldersView();

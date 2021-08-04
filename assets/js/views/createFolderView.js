@@ -9,19 +9,22 @@ class createFolderView {
       <div class="color"></div>
       <h3 class="name">${data}</h3>
     </div>
-    <div class="more">
+    <!-- <div class="more">
       <div class="circle"></div>
       <div class="circle"></div>
       <div class="circle"></div>
-    </div>
+    </div> -->
   </div>`;
   }
-
   createNewFolderTab(data) {
     const markup = this._generateNewTabMarkup(data);
     const sidebarTabs = this._parentElement
       .closest(".app-container")
       .querySelector(".sidebar--tabs");
+    const sidebarEmpty = sidebarTabs.querySelector(".sidebar--tabs--empty");
+    if (!sidebarEmpty.classList.contains(`hidden`)) {
+      sidebarEmpty.classList.add(`hidden`);
+    }
     sidebarTabs.insertAdjacentHTML("beforeend", markup);
   }
 }

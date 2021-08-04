@@ -5,6 +5,11 @@
   &--tabs {
     @include flex-design(column, space-between, center);
     width: 100%;
+    &--empty {
+      width: 100%;
+      height: auto;
+      margin-top: 5rem;
+    }
     .tab {
       @include flex-design(row, space-between, center);
       width: 100%;

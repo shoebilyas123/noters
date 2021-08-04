@@ -104,11 +104,6 @@ input {
   justify-content: flex-start !important;
   align-items: center !important;
 }
-.sidebar--empty {
-  width: 100%;
-  height: auto;
-  margin-top: 5rem;
-}
 
 .sidebar--tabs {
   display: flex;
@@ -116,6 +111,11 @@ input {
   justify-content: space-between !important;
   align-items: center !important;
   width: 100%;
+}
+.sidebar--tabs--empty {
+  width: 100%;
+  height: auto;
+  margin-top: 5rem;
 }
 .sidebar--tabs .tab {
   display: flex;
@@ -226,6 +226,9 @@ input {
   align-items: center !important;
   padding: 0 5rem;
   width: 100%;
+}
+.main .address-bar .changeOpacity {
+  opacity: 0;
 }
 
 .notes-collection {

@@ -1,5 +1,8 @@
 class sidebarView {
   _parentElement = document.querySelector(".sidebar");
+  getSidebarTabClass() {
+    return this._parentElement.querySelector("sidebar--empty");
+  }
   changeTab(e) {
     if (
       !e.target.classList.contains("tab") &&

@@ -6,6 +6,7 @@ class foldersView {
   changeLocationAddress(data) {
     const address = this._parentElement.querySelector(`.address-bar`);
     address.querySelector("p").textContent = `My Notes > ${data.name}`;
+    address.querySelector(".buttons").classList.remove("changeOpacity");
   }
   _generateFolderDataMarkup(data) {
     return `<div class="note">
@@ -21,6 +22,13 @@ class foldersView {
         </div>
       </div>
     </div>`;
+  }
+  renderFolderNote(data) {
+    console.log(data);
+    const folderElement =
+      this._parentElement.querySelector(".notes-collection");
+    const markup = this._generateFolderDataMarkup(data);
+    folderElement.insertAdjacentHTML("beforeend", markup);
   }
   renderFolderData(folderData) {
     const folderElement =
@@ -69,6 +77,12 @@ class foldersView {
     const notesFolder = this._parentElement.querySelector(".notes-collection");
 
     notesFolder.addEventListener("click", handler);
+  }
+  addHandlerDeleteButton(handler) {
+    const deleteButton = this._parentElement
+      .querySelector(".address-bar")
+      .querySelector(".delete");
+    deleteButton.addEventListener("click", handler);
   }
 }
 

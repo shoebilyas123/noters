@@ -16,10 +16,4 @@
     border-bottom: 1px solid $light-gray-border;
     @include flex-design(row, flex-start, center);
   }
-
-  &--empty {
-    width: 100%;
-    height: auto;
-    margin-top: 5rem;
-  }
 }

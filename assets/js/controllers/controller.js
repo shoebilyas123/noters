@@ -18,7 +18,9 @@ const controlLocalStorage = function () {
 };
 
 window.addEventListener("load", controlLocalStorage);
+// window.addEventListener("load", controlEmptySidebar);
 
+// const controlEmptySidebar = function () {};
 const controlCreateFolderForm = function () {
   formView.clearForm();
   formView.createFolderForm();
@@ -90,6 +92,7 @@ const controlCreateNote = function (e) {
   if (!isValid) return;
   const noteState = { name: newName, folderLocation };
   model.addToNotesBookmarks(noteState);
+  foldersView.renderFolderNote(noteState);
   formView.clearForm();
 };
 const controlCreateNoteForm = function (e) {
@@ -101,14 +104,23 @@ const controlCreateNoteForm = function (e) {
   formView.addHandlerCreateNew(controlCreateNote);
 };
 
+const controlFolderDelete = function (e) {
+  const para = e.target.closest(".address-bar").querySelector("p").innerText;
+  const folderName = para.slice(para.lastIndexOf("> ") + 1, para.length);
+  const savedFolders = model.state.folders_bookmarks;
+  savedFolders.splice(savedFolders.indexOf(folderName), 1);
+  model.state.folders_bookmarks = savedFolders;
+  console.log(model.state.folders_bookmarks);
+};
 const init = function () {
   // sidebarView.renderEmptyImage();
   createFolderView.addHandlerCreateFolder(controlCreateFolderForm);
   sidebarView.changeTabEventListener();
-  sidebarView.eventListenerToggleMoreOptions();
+  // sidebarView.eventListenerToggleMoreOptions();
   sidebarView.addHandlerTabClick(controlFolder);
   foldersView.addHandlerNotesClick(controlNote);
   createNoteView.addHandlerCreateNew(controlCreateNoteForm);
+  foldersView.addHandlerDeleteButton(controlFolderDelete);
 };
 
 init();
