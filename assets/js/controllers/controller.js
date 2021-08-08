@@ -4,11 +4,36 @@ import formView from "../views/formView";
 import sidebarView from "../views/sibebarView";
 import foldersView from "../views/foldersView";
 import createNoteView from "../views/createNoteView";
-
+import EditorJS from "@editorjs/editorjs";
+import noteEditorView from "../views/noteEditorView";
+import Header from "@editorjs/header";
+import List from "@editorjs/list";
+import Qoute from "@editorjs/quote";
+import Checklist from "@editorjs/checklist";
+import Embed from "@editorjs/embed";
 if (module.hot) {
   module.hot.accept();
 }
-
+let editor;
+const initEditor = function () {
+  editor = new EditorJS({
+    holder: "note-editor",
+    tools: {
+      header: {
+        class: Header,
+        shortcut: "CTRL+SHIFT+H",
+      },
+      list: {
+        class: List,
+        shortcut: "CTRL+SHIFT+L",
+      },
+      qoute: {
+        class: Qoute,
+        shortcut: "CTRL+SHIFT+Q",
+      },
+    },
+  });
+};
 const controlLocalStorage = function () {
   const folders = model.state.folders_bookmarks;
   if (!folders) return;
@@ -65,7 +90,22 @@ const controlFolder = function (e) {
     .filter((note) => note !== undefined);
   foldersView.renderFolderData(folderData);
 };
-
+const controlSaveNote = function () {
+  editor
+    .save()
+    .then((savedData) => {
+      // const currentNote = noteEditorView.getDocumentName();
+      const blocks = savedData.blocks;
+      model.updateNoteState("newNote", blocks);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const controlCloseEditor = function (e) {
+  const editor = e.target.closest(".note-editor-container");
+  editor.remove();
+};
 const controlNote = function (e) {
   const buttonClicked = e.target;
   if (
@@ -80,6 +120,13 @@ const controlNote = function (e) {
     const noteData = { name: noteCard.querySelector("h4").innerText };
     foldersView.renderConfirmModal(noteCard, model.removeNoteState);
   }
+  if (buttonClicked.classList.contains("edit")) {
+    const noteData = { name: noteCard.querySelector("h4").innerText };
+    noteEditorView.createEditor(noteData);
+    noteEditorView.addHandlerCloseEditor(controlCloseEditor);
+    initEditor();
+    noteEditorView.addHandlerSave(controlSaveNote);
+  }
 };
 const controlCreateNote = function (e) {
   e.preventDefault();
@@ -90,7 +137,7 @@ const controlCreateNote = function (e) {
   const folderLocation = options.value;
   const isValid = model.isNoteValid(newName);
   if (!isValid) return;
-  const noteState = { name: newName, folderLocation };
+  const noteState = { name: newName, folderLocation, data: "" };
   model.addToNotesBookmarks(noteState);
   foldersView.renderFolderNote(noteState);
   formView.clearForm();
@@ -106,12 +153,13 @@ const controlCreateNoteForm = function (e) {
 
 const controlFolderDelete = function (e) {
   const para = e.target.closest(".address-bar").querySelector("p").innerText;
-  const folderName = para.slice(para.lastIndexOf("> ") + 1, para.length);
-  const savedFolders = model.state.folders_bookmarks;
-  savedFolders.splice(savedFolders.indexOf(folderName), 1);
-  model.state.folders_bookmarks = savedFolders;
-  console.log(model.state.folders_bookmarks);
+  const folderName = para.slice(para.lastIndexOf("> ") + 1, para.length).trim();
+  foldersView.renderFolderDeleteConfirmModal(
+    folderName,
+    model.removeFolderState
+  );
 };
+
 const init = function () {
   // sidebarView.renderEmptyImage();
   createFolderView.addHandlerCreateFolder(controlCreateFolderForm);
@@ -122,5 +170,5 @@ const init = function () {
   createNoteView.addHandlerCreateNew(controlCreateNoteForm);
   foldersView.addHandlerDeleteButton(controlFolderDelete);
 };
-
+// initEditor();
 init();

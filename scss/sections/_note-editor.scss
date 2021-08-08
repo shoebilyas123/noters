@@ -1,0 +1,42 @@
+@use './../components/variables' as *;
+@use './../components/mixins' as *;
+
+.note-editor-container {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background: rgba($folder-blue, 0.5);
+  padding: 25px;
+  #note-editor {
+    background: white;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    padding: 2rem;
+    .codex-editor {
+      width: 50% !important;
+      border-radius: 5px;
+      border: 1px solid $very-light-gray;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      padding: 5px;
+    }
+    .utils-container {
+      width: 50%;
+      @include flex-design(row, space-between, center);
+      margin-left: 50%;
+      transform: translateX(-50%);
+      .buttons {
+        @include flex-design(row, space-evenly, center);
+      }
+      .app-button {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+    h1 {
+      padding: 5px;
+    }
+  }
+}
