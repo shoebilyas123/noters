@@ -77,23 +77,13 @@ export const isNoteValid = function (noteName) {
   return notesBookmarks.every((note) => note.name !== noteName);
 };
 export const updateNoteState = function (noteName, data) {
-  const notesBookmarks = state.notes_bookmarks;
-
-  let currentNote;
-  notesBookmarks.forEach((note) => {
+  state.notes_bookmarks.forEach((note) => {
     if (note.name === noteName) {
-      currentNote = note;
-      return;
-    }
-  });
-  console.log(currentNote);
-  currentNote.data = data;
-  state.notes_bookmarks = state.notes_bookmarks.map((note) => {
-    if (note.name === noteName) {
-      note = currentNote;
+      note.data = data;
     }
   });
   console.log(state.notes_bookmarks);
+  addNotesToLocalStorage(state.notes_bookmarks);
 };
 const initState = function () {
   const folders = localStorage.getItem("mySavedFolders");
@@ -104,5 +94,13 @@ const initState = function () {
   if (!notes) return;
   state.notes_bookmarks = JSON.parse(notes);
 };
-
+export const getNoteData = function (noteName) {
+  let savedData = {};
+  state.notes_bookmarks.forEach((note) => {
+    if (note.name === noteName) {
+      savedData = note.data;
+    }
+  });
+  return savedData;
+};
 initState();

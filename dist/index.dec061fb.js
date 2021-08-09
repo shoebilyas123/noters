@@ -455,8 +455,9 @@ require("@editorjs/embed");
 if (module.hot) {
   module.hot.accept();
 }
-let editor;
+let editor, documentName;
 const initEditor = function () {
+  const savedData = _modelsModel.getNoteData(documentName);
   editor = new _editorjsEditorjsDefault.default({
     holder: "note-editor",
     tools: {
@@ -472,7 +473,8 @@ const initEditor = function () {
         class: _editorjsQuoteDefault.default,
         shortcut: "CTRL+SHIFT+Q"
       }
-    }
+    },
+    data: savedData
   });
 };
 const controlLocalStorage = function () {
@@ -483,8 +485,6 @@ const controlLocalStorage = function () {
   });
 };
 window.addEventListener("load", controlLocalStorage);
-// window.addEventListener("load", controlEmptySidebar);
-// const controlEmptySidebar = function () {};
 const controlCreateFolderForm = function () {
   _viewsFormViewDefault.default.clearForm();
   _viewsFormViewDefault.default.createFolderForm();
@@ -524,9 +524,7 @@ const controlFolder = function (e) {
 };
 const controlSaveNote = function () {
   editor.save().then(savedData => {
-    // const currentNote = noteEditorView.getDocumentName();
-    const blocks = savedData.blocks;
-    _modelsModel.updateNoteState("newNote", blocks);
+    _modelsModel.updateNoteState(documentName, savedData);
   }).catch(err => {
     console.log(err);
   });
@@ -551,6 +549,7 @@ const controlNote = function (e) {
     };
     _viewsNoteEditorViewDefault.default.createEditor(noteData);
     _viewsNoteEditorViewDefault.default.addHandlerCloseEditor(controlCloseEditor);
+    documentName = _viewsNoteEditorViewDefault.default.getDocumentName();
     initEditor();
     _viewsNoteEditorViewDefault.default.addHandlerSave(controlSaveNote);
   }
@@ -566,7 +565,7 @@ const controlCreateNote = function (e) {
   const noteState = {
     name: newName,
     folderLocation,
-    data: ""
+    data: {}
   };
   _modelsModel.addToNotesBookmarks(noteState);
   _viewsFoldersViewDefault.default.renderFolderNote(noteState);
@@ -595,7 +594,6 @@ const init = function () {
   _viewsCreateNoteViewDefault.default.addHandlerCreateNew(controlCreateNoteForm);
   _viewsFoldersViewDefault.default.addHandlerDeleteButton(controlFolderDelete);
 };
-// initEditor();
 init();
 
 },{"../models/model":"34Jm7","../views/createFolderView":"4isxj","../views/formView":"yqQiy","../views/sibebarView":"3DEE0","../views/foldersView":"7b1QR","../views/createNoteView":"U7eNO","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","@editorjs/editorjs":"RKeHJ","../views/noteEditorView":"67O9T","@editorjs/header":"52HMf","@editorjs/list":"5AfE8","@editorjs/quote":"IqCmq","@editorjs/checklist":"7vhMy","@editorjs/embed":"7MPus"}],"34Jm7":[function(require,module,exports) {
@@ -633,6 +631,9 @@ _parcelHelpers.export(exports, "isNoteValid", function () {
 });
 _parcelHelpers.export(exports, "updateNoteState", function () {
   return updateNoteState;
+});
+_parcelHelpers.export(exports, "getNoteData", function () {
+  return getNoteData;
 });
 const state = {
   notes: {},
@@ -694,22 +695,13 @@ const isNoteValid = function (noteName) {
   return notesBookmarks.every(note => note.name !== noteName);
 };
 const updateNoteState = function (noteName, data) {
-  const notesBookmarks = state.notes_bookmarks;
-  let currentNote;
-  notesBookmarks.forEach(note => {
+  state.notes_bookmarks.forEach(note => {
     if (note.name === noteName) {
-      currentNote = note;
-      return;
-    }
-  });
-  console.log(currentNote);
-  currentNote.data = data;
-  state.notes_bookmarks = state.notes_bookmarks.map(note => {
-    if (note.name === noteName) {
-      note = currentNote;
+      note.data = data;
     }
   });
   console.log(state.notes_bookmarks);
+  addNotesToLocalStorage(state.notes_bookmarks);
 };
 const initState = function () {
   const folders = localStorage.getItem("mySavedFolders");
@@ -718,6 +710,15 @@ const initState = function () {
   const notes = localStorage.getItem("myNotes");
   if (!notes) return;
   state.notes_bookmarks = JSON.parse(notes);
+};
+const getNoteData = function (noteName) {
+  let savedData = {};
+  state.notes_bookmarks.forEach(note => {
+    if (note.name === noteName) {
+      savedData = note.data;
+    }
+  });
+  return savedData;
 };
 initState();
 
@@ -13646,6 +13647,9 @@ class noteEditorView {
           </div>
         </div>
       </div>`;
+  }
+  getDocumentName() {
+    return this._parentElement.querySelector(".note-editor-container").querySelector(".utils-container").querySelector("h1").innerText;
   }
   createEditor(data) {
     const markup = this._generateEditorMarkup(data);

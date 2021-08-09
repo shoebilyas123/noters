@@ -12,6 +12,12 @@ class noteEditorView {
         </div>
       </div>`;
   }
+  getDocumentName() {
+    return this._parentElement
+      .querySelector(".note-editor-container")
+      .querySelector(".utils-container")
+      .querySelector("h1").innerText;
+  }
   createEditor(data) {
     const markup = this._generateEditorMarkup(data);
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
