@@ -21,13 +21,6 @@ class sidebarView {
     const sidebarTabs = this._parentElement.querySelector(".sidebar--tabs");
     sidebarTabs.addEventListener("click", this.changeTab);
   }
-  _generateMoreOptionsMarkup() {
-    return `<div class="more--options">
-    <div class="edit option">Edit</div>
-    <div class="separator"></div>
-    <div class="delete option">Delete</div>
-  </div>`;
-  }
   toggleMoreOptionsMenu(e) {
     if (
       !e.target.classList.contains("more") &&

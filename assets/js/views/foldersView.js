@@ -10,16 +10,20 @@ class foldersView {
   }
   _generateFolderDataMarkup(data) {
     return `<div class="note">
-      <div class="note--thumbnail">
-      <p>This note is empty right now. Add some text...</p>
-       
-      </div>
-      <div class="note--interact">
-        <h4>${data.name}</h4>
+        <h4><svg width="2rem" height="2rem" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 92.8002H80.7234V29L67 8L19 8L19 92.8002Z" fill="#2F80ED"/>
+        <line x1="24.6705" y1="21.7918" x2="63.3755" y2="21.7918" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <line x1="24.6705" y1="31.523" x2="74.4969" y2="31.523" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <line x1="24.6705" y1="41.2542" x2="71.7165" y2="41.2542" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <line x1="24.6705" y1="50.9854" x2="71.7165" y2="50.9854" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <line x1="24.6705" y1="60.7166" x2="63.3755" y2="60.7166" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <line x1="24.6705" y1="70.4477" x2="74.4969" y2="70.4477" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <path d="M67 8.00001L80.5 28.5L62.5 26L67 8.00001Z" fill="#82B2F2"/>
+        </svg>
+        ${data.name}</h4>
         <div class="buttons">
-          <button class="app-button edit">Edit</button
+          <button class="app-button edit">Open  </button
           ><button class="app-button delete">Delete</button>
-        </div>
       </div>
     </div>`;
   }

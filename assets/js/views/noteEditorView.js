@@ -6,7 +6,7 @@ class noteEditorView {
           <div class="utils-container">
             <h1>${data.name}</h1>
             <div class="buttons"><div class="app-button btn-save">Save</div>
-            <div class="app-button btn-close">Close</div>
+            <div class="app-button btn-close cancel">Close</div>
             </div>
           </div>
         </div>

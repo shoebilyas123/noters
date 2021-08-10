@@ -1,19 +1,34 @@
 @use './../components/variables' as *;
 @use './../components/mixins' as *;
 .sidebar {
+  position: sticky;
+  top: 0;
   width: 25%;
   height: 100vh;
-  background: $light-gray;
+  background: $accent-dark;
+  color: $app-white !important;
+  box-shadow: 2px -1px 15px $cursor-dark;
+  z-index: 999;
   &--title {
-    text-align: center;
-    border-bottom: 1px solid $light-gray-border;
-    h1 {
-      font-size: $app-lg;
+    border-bottom: 1px solid $app-border-dark;
+    header {
+      background: $accent-dark;
+      @include flex-design(row, center, center);
+      text-transform: uppercase;
+      padding: 5px;
+      h1 {
+        color: $app-white !important;
+      }
+      width: 100%;
+      .logo-img {
+        width: 2.5rem;
+        height: auto;
+      }
     }
   }
   .create-buttons--container {
     width: 100%;
-    border-bottom: 1px solid $light-gray-border;
+    border-bottom: 1px solid $app-border-dark;
     @include flex-design(row, flex-start, center);
   }
 }

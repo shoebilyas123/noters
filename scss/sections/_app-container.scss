@@ -7,14 +7,14 @@
 }
 
 body {
-  background: $app-white;
+  background: $app-black;
 }
 
 .app-container {
   @include flex-design(row, space-between, flex-start);
   width: 100%;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: scroll;
   position: relative;
   .hidden {
     display: none;

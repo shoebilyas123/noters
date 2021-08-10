@@ -775,14 +775,35 @@ class createFolderView {
   _generateNewTabMarkup(data) {
     return `<div class="tab">
     <div class="general">
-      <div class="color"></div>
+    <svg width="2.5rem" height="2.5rem" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="20" y="23" width="33" height="22" rx="2" fill="url(#paint0_linear)"/>
+    <g filter="url(#filter0_d)">
+    <rect x="20" y="31" width="63" height="42" rx="2" fill="url(#paint1_linear)"/>
+    </g>
+    <defs>
+    <filter id="filter0_d" x="16" y="27" width="73" height="52" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+    <feOffset dx="1" dy="1"/>
+    <feGaussianBlur stdDeviation="2.5"/>
+    <feComposite in2="hardAlpha" operator="out"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+    <linearGradient id="paint0_linear" x1="36.5" y1="23" x2="36.5" y2="45" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#2D9CDB"/>
+    <stop offset="1" stop-color="#2F80ED"/>
+    </linearGradient>
+    <linearGradient id="paint1_linear" x1="51.5" y1="31" x2="51.5" y2="73" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#2F80ED"/>
+    <stop offset="1" stop-color="#2D9CDB"/>
+    </linearGradient>
+    </defs>
+    </svg>
+    
       <h3 class="name">${data}</h3>
     </div>
-    <!-- <div class="more">
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-    </div> -->
   </div>`;
   }
   createNewFolderTab(data) {
@@ -906,13 +927,6 @@ class sidebarView {
     const sidebarTabs = this._parentElement.querySelector(".sidebar--tabs");
     sidebarTabs.addEventListener("click", this.changeTab);
   }
-  _generateMoreOptionsMarkup() {
-    return `<div class="more--options">
-    <div class="edit option">Edit</div>
-    <div class="separator"></div>
-    <div class="delete option">Delete</div>
-  </div>`;
-  }
   toggleMoreOptionsMenu(e) {
     if (!e.target.classList.contains("more") && !e.target.classList.contains("circle")) return;
     let moreIcon = e.target;
@@ -949,16 +963,20 @@ class foldersView {
   }
   _generateFolderDataMarkup(data) {
     return `<div class="note">
-      <div class="note--thumbnail">
-      <p>This note is empty right now. Add some text...</p>
-       
-      </div>
-      <div class="note--interact">
-        <h4>${data.name}</h4>
+        <h4><svg width="2rem" height="2rem" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M19 92.8002H80.7234V29L67 8L19 8L19 92.8002Z" fill="#2F80ED"/>
+        <line x1="24.6705" y1="21.7918" x2="63.3755" y2="21.7918" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <line x1="24.6705" y1="31.523" x2="74.4969" y2="31.523" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <line x1="24.6705" y1="41.2542" x2="71.7165" y2="41.2542" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <line x1="24.6705" y1="50.9854" x2="71.7165" y2="50.9854" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <line x1="24.6705" y1="60.7166" x2="63.3755" y2="60.7166" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <line x1="24.6705" y1="70.4477" x2="74.4969" y2="70.4477" stroke="white" stroke-width="3" stroke-linecap="round"/>
+        <path d="M67 8.00001L80.5 28.5L62.5 26L67 8.00001Z" fill="#82B2F2"/>
+        </svg>
+        ${data.name}</h4>
         <div class="buttons">
-          <button class="app-button edit">Edit</button
+          <button class="app-button edit">Open  </button
           ><button class="app-button delete">Delete</button>
-        </div>
       </div>
     </div>`;
   }
@@ -13642,7 +13660,7 @@ class noteEditorView {
           <div class="utils-container">
             <h1>${data.name}</h1>
             <div class="buttons"><div class="app-button btn-save">Save</div>
-            <div class="app-button btn-close">Close</div>
+            <div class="app-button btn-close cancel">Close</div>
             </div>
           </div>
         </div>

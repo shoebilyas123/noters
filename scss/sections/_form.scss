@@ -7,17 +7,17 @@
   position: absolute;
   width: 100%;
   height: 100vh;
-  background: rgba($folder-blue, 0.5);
+  background: rgba($app-black, 0.9);
+  z-index: 1000;
+  color: $app-white;
   @include flex-design(row, center, center);
   .create-form {
     @include flex-design(column, start, start);
     width: 427px;
     height: fit-content;
-    background: $light-gray;
-    border-radius: 5px;
-    border: 1px solid $light-gray-border;
+    background: $accent-dark;
     padding: 15px;
-    box-shadow: 0 0 15px $shadow-black;
+    box-shadow: 0 0 15px $app-black;
     h3,
     h2 {
       font-weight: 500;
@@ -25,7 +25,7 @@
     &--header {
       text-align: center;
       width: 100%;
-      border-bottom: 1px solid $light-gray-border-2;
+      border-bottom: 1px solid $app-border-dark;
       margin-bottom: 15px;
       h2 {
         font-weight: 400;
@@ -37,8 +37,8 @@
       margin-top: 5px;
       width: 100%;
       padding: 5px;
-      border: 1px solid $gen-gray;
       border-radius: 3.5px;
+      border: 1px solid $cursor-sidebar-hover-dark;
       outline: none;
       background: $app-white;
     }
