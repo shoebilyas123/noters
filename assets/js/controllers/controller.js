@@ -80,6 +80,7 @@ const controlCreateFolder = function (e) {
   if (isNewFolderValid) {
     model.addFoldersToBookmarks(data);
     createFolderView.createNewFolderTab(data.newName);
+    initFirstFolder();
     formView.clearForm();
   } else {
     return alert("Please enter a valid folder name!");
@@ -193,8 +194,8 @@ const controlFolderDelete = function (e) {
 
 const controlSidebarClose = function (e) {
   const sidebar = sidebarView.getSidebarElement();
-  sidebar.classList.add("sidebar-close-animation");
   sidebar.classList.remove("sidebar-animation");
+  sidebar.classList.add("sidebar-close-animation");
 };
 
 const controlSidebarMobile = function () {
@@ -209,17 +210,22 @@ const initMobile = function () {
     .getSidebarElement()
     .querySelector(".close-sidebar-icon");
   if (window.innerWidth <= 375) {
+    foldersView.renderFirstTimeImage();
     closeBtnSidebar.classList.remove("hiddenCloseIcon");
     foldersView.addHandlerMenuBtn(controlSidebarMobile);
   } else {
     closeBtnSidebar.classList.add("hiddenCloseIcon");
     menuBtn.classList.add("hiddenMenuBtn");
+    foldersView.hideFirstTimeImage();
   }
 };
 const init = function () {
   if (window.innerWidth <= 375) {
     initMobile();
+  } else {
+    foldersView.hideFirstTimeImage();
   }
+
   model.initState();
   // sidebarView.renderEmptyImage();
   createFolderView.addHandlerCreateFolder(controlCreateFolderForm);

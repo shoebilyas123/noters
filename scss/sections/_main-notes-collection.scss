@@ -8,7 +8,13 @@
 
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-
+  .first-time-icon {
+    width: 100vw;
+    height: auto;
+  }
+  .hiddenImage {
+    display: none;
+  }
   // box-shadow: inset 0 2px 5px rgba($cursor-dark, 0.4);
   // overflow-y: scroll;
   .note {

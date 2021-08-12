@@ -261,7 +261,7 @@ input {
   width: 100%;
 }
 .main .address-bar .changeOpacity {
-  display: none !important;
+  opacity: 0 !important;
   z-index: 999;
 }
 .main .address-bar .menu-btn {
@@ -314,6 +314,13 @@ input {
   background: #4f4f4f;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+}
+.notes-collection .first-time-icon {
+  width: 100vw;
+  height: auto;
+}
+.notes-collection .hiddenImage {
+  display: none;
 }
 .notes-collection .note {
   height: min-content;

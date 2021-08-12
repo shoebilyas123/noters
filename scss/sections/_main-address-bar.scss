@@ -11,7 +11,8 @@
     padding: 0 5rem;
     width: 100%;
     .changeOpacity {
-      display: none !important;
+      opacity: 0 !important;
+      // display: none !important;
       z-index: 999;
     }
     .menu-btn {

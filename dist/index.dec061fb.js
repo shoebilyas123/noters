@@ -514,6 +514,7 @@ const controlCreateFolder = function (e) {
   if (isNewFolderValid) {
     _modelsModel.addFoldersToBookmarks(data);
     _viewsCreateFolderViewDefault.default.createNewFolderTab(data.newName);
+    initFirstFolder();
     _viewsFormViewDefault.default.clearForm();
   } else {
     return alert("Please enter a valid folder name!");
@@ -610,8 +611,8 @@ const controlFolderDelete = function (e) {
 };
 const controlSidebarClose = function (e) {
   const sidebar = _viewsSibebarViewDefault.default.getSidebarElement();
-  sidebar.classList.add("sidebar-close-animation");
   sidebar.classList.remove("sidebar-animation");
+  sidebar.classList.add("sidebar-close-animation");
 };
 const controlSidebarMobile = function () {
   const sidebar = _viewsSibebarViewDefault.default.getSidebarElement();
@@ -623,16 +624,20 @@ const initMobile = function () {
   const menuBtn = _viewsFoldersViewDefault.default.getMenuIcon();
   const closeBtnSidebar = _viewsSibebarViewDefault.default.getSidebarElement().querySelector(".close-sidebar-icon");
   if (window.innerWidth <= 375) {
+    _viewsFoldersViewDefault.default.renderFirstTimeImage();
     closeBtnSidebar.classList.remove("hiddenCloseIcon");
     _viewsFoldersViewDefault.default.addHandlerMenuBtn(controlSidebarMobile);
   } else {
     closeBtnSidebar.classList.add("hiddenCloseIcon");
     menuBtn.classList.add("hiddenMenuBtn");
+    _viewsFoldersViewDefault.default.hideFirstTimeImage();
   }
 };
 const init = function () {
   if (window.innerWidth <= 375) {
     initMobile();
+  } else {
+    _viewsFoldersViewDefault.default.hideFirstTimeImage();
   }
   _modelsModel.initState();
   // sidebarView.renderEmptyImage();
@@ -1142,6 +1147,12 @@ class foldersView {
   }
   getMenuIcon() {
     return this._parentElement.querySelector(".menu-btn");
+  }
+  hideFirstTimeImage() {
+    this._parentElement.querySelector(".first-time-icon").classList.add("hiddenImage");
+  }
+  renderFirstTimeImage() {
+    this._parentElement.querySelector(".first-time-icon").classList.remove("hiddenImage");
   }
 }
 exports.default = new foldersView();

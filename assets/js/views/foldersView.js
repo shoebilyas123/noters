@@ -120,6 +120,16 @@ class foldersView {
   getMenuIcon() {
     return this._parentElement.querySelector(".menu-btn");
   }
+  hideFirstTimeImage() {
+    this._parentElement
+      .querySelector(".first-time-icon")
+      .classList.add("hiddenImage");
+  }
+  renderFirstTimeImage() {
+    this._parentElement
+      .querySelector(".first-time-icon")
+      .classList.remove("hiddenImage");
+  }
 }
 
 export default new foldersView();
