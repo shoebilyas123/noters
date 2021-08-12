@@ -1,5 +1,7 @@
 // import { waitFor } from "../helpers";
 
+import createNoteView from "./createNoteView";
+
 class foldersView {
   _parentElement = document.querySelector(".main");
 
@@ -107,6 +109,13 @@ class foldersView {
       .querySelector(".address-bar")
       .querySelector(".delete");
     deleteButton.addEventListener("click", handler);
+  }
+  addHandlerMenuBtn(handler) {
+    const menuBtn = this._parentElement.querySelector(".menu-btn");
+
+    if (menuBtn === null || menuBtn === undefined) return;
+    menuBtn.classList.remove("hiddenMenuBtn");
+    menuBtn.addEventListener("click", handler);
   }
 }
 

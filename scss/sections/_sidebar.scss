@@ -9,6 +9,21 @@
   color: $app-white !important;
   box-shadow: 2px -1px 15px $cursor-dark;
   z-index: 999;
+  .close-sidebar-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1.5rem;
+    height: auto;
+    margin: 0.5rem;
+    margin-top: 0.5rem;
+    box-shadow: 0 0 5px $accent-dark;
+    border-radius: 50%;
+    padding: 0.1rem;
+  }
+  .hiddenCloseIcon {
+    display: none;
+  }
   &--title {
     border-bottom: 1px solid $app-border-dark;
     header {
@@ -30,5 +45,35 @@
     width: 100%;
     border-bottom: 1px solid $app-border-dark;
     @include flex-design(row, flex-start, center);
+  }
+}
+
+@media screen and(max-width: 375px) {
+  .sidebar {
+    position: absolute;
+    width: 85%;
+    transform: translateX(-100%);
+  }
+  .sidebar-animation {
+    animation: sidebaranimation 0.5s ease-in-out 1 forwards;
+  }
+  .sidebar-close-animation {
+    animation: sidebar_close_anim 0.5s ease-in-out 1 forwards;
+  }
+  @keyframes sidebar_close_anim {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes sidebaranimation {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
   }
 }

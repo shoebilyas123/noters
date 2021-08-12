@@ -85,7 +85,7 @@ export const updateNoteState = function (noteName, data) {
   console.log(state.notes_bookmarks);
   addNotesToLocalStorage(state.notes_bookmarks);
 };
-const initState = function () {
+export const initState = function () {
   const folders = localStorage.getItem("mySavedFolders");
   if (!folders) return;
   state.folders_bookmarks = JSON.parse(folders);
@@ -103,4 +103,3 @@ export const getNoteData = function (noteName) {
   });
   return savedData;
 };
-initState();

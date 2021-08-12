@@ -30,3 +30,9 @@
     }
   }
 }
+
+@media screen and (max-width: 375px) {
+  .notes-collection {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -53,6 +53,18 @@ class sidebarView {
     const tabsContainer = this._parentElement.querySelector(".sidebar--tabs");
     tabsContainer.addEventListener("click", handler);
   }
+  getSidebarElement() {
+    console.log(this._parentElement);
+    return this._parentElement;
+  }
+  renderFirstTab() {
+    const tab = this._parentElement.getElementsByClassName("tab").item(0);
+    tab.classList.add("tab--selected");
+  }
+  addHandlerSidebarClose(handler) {
+    const closeBtn = this._parentElement.querySelector(".close-sidebar-icon");
+    closeBtn.addEventListener("click", handler);
+  }
 }
 
 export default new sidebarView();

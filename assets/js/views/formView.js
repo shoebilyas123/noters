@@ -51,6 +51,18 @@ class formView {
     </form>
   </div>`;
   }
+  _generateNoFolderAlertMarkup() {
+    return `<div class="delete-confirm modal-form">
+    <form action="" class="create-form">
+      <div class="create-form--header">
+        <h3>Please create a folder to add a new note!</h3>
+      </div>
+      <div class="buttons">
+      <button class="app-button cancel">Okay</button>
+      </div>
+    </form>
+  </div>`;
+  }
   _deleteForm(e) {
     e.preventDefault();
     const target = this.closest(".modal-form");
@@ -82,6 +94,10 @@ class formView {
   }
   renderNewNoteModal(options) {
     const markup = this._generateNoteFormMarkup(options);
+    this._parentElement.insertAdjacentHTML("afterbegin", markup);
+  }
+  renderNoFolderAlertModal(handler) {
+    const markup = this._generateNoFolderAlertMarkup();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 }

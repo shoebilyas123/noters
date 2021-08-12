@@ -15,6 +15,24 @@ if (module.hot) {
   module.hot.accept();
 }
 let editor, documentName;
+
+const initFirstFolder = function () {
+  const tabName = sidebarView
+    .getSidebarElement()
+    .querySelector(".tab").innerText;
+  sidebarView.renderFirstTab();
+  model.state.folder = {
+    name: tabName,
+  };
+  foldersView.changeLocationAddress(model.state.folder);
+  const folderData = model.state.notes_bookmarks
+    .map((note) => {
+      if (note.folderLocation === tabName) return note;
+    })
+    .filter((note) => note !== undefined);
+  foldersView.renderFolderData(folderData);
+};
+
 const initEditor = function () {
   const savedData = model.getNoteData(documentName);
   editor = new EditorJS({
@@ -88,10 +106,17 @@ const controlFolder = function (e) {
     .filter((note) => note !== undefined);
   foldersView.renderFolderData(folderData);
 };
-const controlSaveNote = function () {
+const controlSaveNote = function (e) {
   editor
     .save()
     .then((savedData) => {
+      if (e.target.textContent === "Save") {
+        e.target.textContent = "Saved!";
+        setInterval(() => {
+          e.target.textContent = "Save";
+        }, 3000);
+      }
+
       model.updateNoteState(documentName, savedData);
     })
     .catch((err) => {
@@ -145,6 +170,12 @@ const controlCreateNote = function (e) {
 };
 const controlCreateNoteForm = function (e) {
   formView.clearForm();
+  if (model.state.folders_bookmarks.length === 0) {
+    formView.renderNoFolderAlertModal();
+    const okayBtn = formView.getFormCancelButton("modal-form");
+    formView.formCancellation(okayBtn);
+    return;
+  }
   const options = model.state.folders_bookmarks;
   formView.renderNewNoteModal(options);
   const formCancelButton = formView.getFormCancelButton(`new-note-modal`);
@@ -159,7 +190,29 @@ const controlFolderDelete = function (e) {
     model.removeFolderState
   );
 };
+
+const controlSidebarClose = function (e) {
+  const sidebar = sidebarView.getSidebarElement();
+  sidebar.classList.add("sidebar-close-animation");
+  sidebar.classList.remove("sidebar-animation");
+};
+
+const controlSidebarMobile = function () {
+  const sidebar = sidebarView.getSidebarElement();
+  sidebar.classList.add("sidebar-animation");
+  sidebar.classList.remove("sidebar-close-animation");
+  sidebarView.addHandlerSidebarClose(controlSidebarClose);
+};
+const initMobile = function () {
+  if (window.innerWidth <= 375) {
+    foldersView.addHandlerMenuBtn(controlSidebarMobile);
+  }
+};
 const init = function () {
+  if (window.innerWidth <= 375) {
+    initMobile();
+  }
+  model.initState();
   // sidebarView.renderEmptyImage();
   createFolderView.addHandlerCreateFolder(controlCreateFolderForm);
   sidebarView.changeTabEventListener();
@@ -170,3 +223,5 @@ const init = function () {
   foldersView.addHandlerDeleteButton(controlFolderDelete);
 };
 init();
+window.addEventListener("resize", initMobile);
+window.addEventListener("load", initFirstFolder);

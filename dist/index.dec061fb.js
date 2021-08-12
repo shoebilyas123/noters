@@ -456,6 +456,18 @@ if (module.hot) {
   module.hot.accept();
 }
 let editor, documentName;
+const initFirstFolder = function () {
+  const tabName = _viewsSibebarViewDefault.default.getSidebarElement().querySelector(".tab").innerText;
+  _viewsSibebarViewDefault.default.renderFirstTab();
+  _modelsModel.state.folder = {
+    name: tabName
+  };
+  _viewsFoldersViewDefault.default.changeLocationAddress(_modelsModel.state.folder);
+  const folderData = _modelsModel.state.notes_bookmarks.map(note => {
+    if (note.folderLocation === tabName) return note;
+  }).filter(note => note !== undefined);
+  _viewsFoldersViewDefault.default.renderFolderData(folderData);
+};
 const initEditor = function () {
   const savedData = _modelsModel.getNoteData(documentName);
   editor = new _editorjsEditorjsDefault.default({
@@ -522,8 +534,14 @@ const controlFolder = function (e) {
   }).filter(note => note !== undefined);
   _viewsFoldersViewDefault.default.renderFolderData(folderData);
 };
-const controlSaveNote = function () {
+const controlSaveNote = function (e) {
   editor.save().then(savedData => {
+    if (e.target.textContent === "Save") {
+      e.target.textContent = "Saved!";
+      setInterval(() => {
+        e.target.textContent = "Save";
+      }, 3000);
+    }
     _modelsModel.updateNoteState(documentName, savedData);
   }).catch(err => {
     console.log(err);
@@ -573,6 +591,12 @@ const controlCreateNote = function (e) {
 };
 const controlCreateNoteForm = function (e) {
   _viewsFormViewDefault.default.clearForm();
+  if (_modelsModel.state.folders_bookmarks.length === 0) {
+    _viewsFormViewDefault.default.renderNoFolderAlertModal();
+    const okayBtn = _viewsFormViewDefault.default.getFormCancelButton("modal-form");
+    _viewsFormViewDefault.default.formCancellation(okayBtn);
+    return;
+  }
   const options = _modelsModel.state.folders_bookmarks;
   _viewsFormViewDefault.default.renderNewNoteModal(options);
   const formCancelButton = _viewsFormViewDefault.default.getFormCancelButton(`new-note-modal`);
@@ -584,7 +608,27 @@ const controlFolderDelete = function (e) {
   const folderName = para.slice(para.lastIndexOf("> ") + 1, para.length).trim();
   _viewsFoldersViewDefault.default.renderFolderDeleteConfirmModal(folderName, _modelsModel.removeFolderState);
 };
+const controlSidebarClose = function (e) {
+  const sidebar = _viewsSibebarViewDefault.default.getSidebarElement();
+  sidebar.classList.add("sidebar-close-animation");
+  sidebar.classList.remove("sidebar-animation");
+};
+const controlSidebarMobile = function () {
+  const sidebar = _viewsSibebarViewDefault.default.getSidebarElement();
+  sidebar.classList.add("sidebar-animation");
+  sidebar.classList.remove("sidebar-close-animation");
+  _viewsSibebarViewDefault.default.addHandlerSidebarClose(controlSidebarClose);
+};
+const initMobile = function () {
+  if (window.innerWidth <= 375) {
+    _viewsFoldersViewDefault.default.addHandlerMenuBtn(controlSidebarMobile);
+  }
+};
 const init = function () {
+  if (window.innerWidth <= 375) {
+    initMobile();
+  }
+  _modelsModel.initState();
   // sidebarView.renderEmptyImage();
   _viewsCreateFolderViewDefault.default.addHandlerCreateFolder(controlCreateFolderForm);
   _viewsSibebarViewDefault.default.changeTabEventListener();
@@ -595,6 +639,8 @@ const init = function () {
   _viewsFoldersViewDefault.default.addHandlerDeleteButton(controlFolderDelete);
 };
 init();
+window.addEventListener("resize", initMobile);
+window.addEventListener("load", initFirstFolder);
 
 },{"../models/model":"34Jm7","../views/createFolderView":"4isxj","../views/formView":"yqQiy","../views/sibebarView":"3DEE0","../views/foldersView":"7b1QR","../views/createNoteView":"U7eNO","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","@editorjs/editorjs":"RKeHJ","../views/noteEditorView":"67O9T","@editorjs/header":"52HMf","@editorjs/list":"5AfE8","@editorjs/quote":"IqCmq","@editorjs/checklist":"7vhMy","@editorjs/embed":"7MPus"}],"34Jm7":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
@@ -631,6 +677,9 @@ _parcelHelpers.export(exports, "isNoteValid", function () {
 });
 _parcelHelpers.export(exports, "updateNoteState", function () {
   return updateNoteState;
+});
+_parcelHelpers.export(exports, "initState", function () {
+  return initState;
 });
 _parcelHelpers.export(exports, "getNoteData", function () {
   return getNoteData;
@@ -720,7 +769,6 @@ const getNoteData = function (noteName) {
   });
   return savedData;
 };
-initState();
 
 },{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"5gA8y":[function(require,module,exports) {
 "use strict";
@@ -873,6 +921,18 @@ class formView {
     </form>
   </div>`;
   }
+  _generateNoFolderAlertMarkup() {
+    return `<div class="delete-confirm modal-form">
+    <form action="" class="create-form">
+      <div class="create-form--header">
+        <h3>Please create a folder to add a new note!</h3>
+      </div>
+      <div class="buttons">
+      <button class="app-button cancel">Okay</button>
+      </div>
+    </form>
+  </div>`;
+  }
   _deleteForm(e) {
     e.preventDefault();
     const target = this.closest(".modal-form");
@@ -902,6 +962,10 @@ class formView {
   }
   renderNewNoteModal(options) {
     const markup = this._generateNoteFormMarkup(options);
+    this._parentElement.insertAdjacentHTML("afterbegin", markup);
+  }
+  renderNoFolderAlertModal(handler) {
+    const markup = this._generateNoFolderAlertMarkup();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
   }
 }
@@ -947,13 +1011,25 @@ class sidebarView {
     const tabsContainer = this._parentElement.querySelector(".sidebar--tabs");
     tabsContainer.addEventListener("click", handler);
   }
+  getSidebarElement() {
+    console.log(this._parentElement);
+    return this._parentElement;
+  }
+  renderFirstTab() {
+    const tab = this._parentElement.getElementsByClassName("tab").item(0);
+    tab.classList.add("tab--selected");
+  }
+  addHandlerSidebarClose(handler) {
+    const closeBtn = this._parentElement.querySelector(".close-sidebar-icon");
+    closeBtn.addEventListener("click", handler);
+  }
 }
 exports.default = new sidebarView();
 
 },{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"7b1QR":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
 _parcelHelpers.defineInteropFlag(exports);
-// import { waitFor } from "../helpers";
+require("./createNoteView");
 class foldersView {
   _parentElement = document.querySelector(".main");
   changeLocationAddress(data) {
@@ -1052,10 +1128,16 @@ class foldersView {
     const deleteButton = this._parentElement.querySelector(".address-bar").querySelector(".delete");
     deleteButton.addEventListener("click", handler);
   }
+  addHandlerMenuBtn(handler) {
+    const menuBtn = this._parentElement.querySelector(".menu-btn");
+    if (menuBtn === null || menuBtn === undefined) return;
+    menuBtn.classList.remove("hiddenMenuBtn");
+    menuBtn.addEventListener("click", handler);
+  }
 }
 exports.default = new foldersView();
 
-},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"U7eNO":[function(require,module,exports) {
+},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","./createNoteView":"U7eNO"}],"U7eNO":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
 _parcelHelpers.defineInteropFlag(exports);
 class createNoteView {
