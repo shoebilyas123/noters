@@ -204,8 +204,16 @@ const controlSidebarMobile = function () {
   sidebarView.addHandlerSidebarClose(controlSidebarClose);
 };
 const initMobile = function () {
+  const menuBtn = foldersView.getMenuIcon();
+  const closeBtnSidebar = sidebarView
+    .getSidebarElement()
+    .querySelector(".close-sidebar-icon");
   if (window.innerWidth <= 375) {
+    closeBtnSidebar.classList.remove("hiddenCloseIcon");
     foldersView.addHandlerMenuBtn(controlSidebarMobile);
+  } else {
+    closeBtnSidebar.classList.add("hiddenCloseIcon");
+    menuBtn.classList.add("hiddenMenuBtn");
   }
 };
 const init = function () {

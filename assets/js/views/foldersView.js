@@ -117,6 +117,9 @@ class foldersView {
     menuBtn.classList.remove("hiddenMenuBtn");
     menuBtn.addEventListener("click", handler);
   }
+  getMenuIcon() {
+    return this._parentElement.querySelector(".menu-btn");
+  }
 }
 
 export default new foldersView();

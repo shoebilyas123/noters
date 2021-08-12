@@ -620,8 +620,14 @@ const controlSidebarMobile = function () {
   _viewsSibebarViewDefault.default.addHandlerSidebarClose(controlSidebarClose);
 };
 const initMobile = function () {
+  const menuBtn = _viewsFoldersViewDefault.default.getMenuIcon();
+  const closeBtnSidebar = _viewsSibebarViewDefault.default.getSidebarElement().querySelector(".close-sidebar-icon");
   if (window.innerWidth <= 375) {
+    closeBtnSidebar.classList.remove("hiddenCloseIcon");
     _viewsFoldersViewDefault.default.addHandlerMenuBtn(controlSidebarMobile);
+  } else {
+    closeBtnSidebar.classList.add("hiddenCloseIcon");
+    menuBtn.classList.add("hiddenMenuBtn");
   }
 };
 const init = function () {
@@ -1133,6 +1139,9 @@ class foldersView {
     if (menuBtn === null || menuBtn === undefined) return;
     menuBtn.classList.remove("hiddenMenuBtn");
     menuBtn.addEventListener("click", handler);
+  }
+  getMenuIcon() {
+    return this._parentElement.querySelector(".menu-btn");
   }
 }
 exports.default = new foldersView();
