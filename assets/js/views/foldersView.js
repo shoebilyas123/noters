@@ -30,7 +30,6 @@ class foldersView {
     </div>`;
   }
   renderFolderNote(data) {
-    console.log(data);
     const folderElement =
       this._parentElement.querySelector(".notes-collection");
     const markup = this._generateFolderDataMarkup(data);

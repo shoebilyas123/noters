@@ -579,7 +579,7 @@ const controlCreateNote = function (e) {
   const options = form.querySelector("#note-select");
   const newName = form.querySelector("#note-name").value;
   const folderLocation = options.value;
-  const isValid = _modelsModel.isNoteValid(newName);
+  const isValid = _modelsModel.isNoteValid(newName, folderLocation);
   if (!isValid) return;
   const noteState = {
     name: newName,
@@ -587,7 +587,7 @@ const controlCreateNote = function (e) {
     data: {}
   };
   _modelsModel.addToNotesBookmarks(noteState);
-  _viewsFoldersViewDefault.default.renderFolderNote(noteState);
+  if (folderLocation === _viewsSibebarViewDefault.default.getSidebarElement().querySelector(".tab--selected").innerText) _viewsFoldersViewDefault.default.renderFolderNote(noteState);
   _viewsFormViewDefault.default.clearForm();
 };
 const controlCreateNoteForm = function (e) {
@@ -750,9 +750,12 @@ const removeFolderState = function (folderName) {
   console.log(folderName, state.folders_bookmarks);
   addFolderToLocalStorage(state.folders_bookmarks);
 };
-const isNoteValid = function (noteName) {
+const isNoteValid = function (noteName, location) {
   const notesBookmarks = state.notes_bookmarks;
-  return notesBookmarks.every(note => note.name !== noteName);
+  const isFolderLocationSame = notesBookmarks.every(note => note.folderLocation !== location);
+  const isNameSame = notesBookmarks.every(note => note.name !== noteName);
+  if (isNameSame && isFolderLocationSame) return false;
+  return true;
 };
 const updateNoteState = function (noteName, data) {
   state.notes_bookmarks.forEach(note => {
@@ -1068,7 +1071,6 @@ class foldersView {
     </div>`;
   }
   renderFolderNote(data) {
-    console.log(data);
     const folderElement = this._parentElement.querySelector(".notes-collection");
     const markup = this._generateFolderDataMarkup(data);
     folderElement.insertAdjacentHTML("beforeend", markup);

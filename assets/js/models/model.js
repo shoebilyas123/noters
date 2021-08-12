@@ -71,10 +71,16 @@ export const removeFolderState = function (folderName) {
   addFolderToLocalStorage(state.folders_bookmarks);
 };
 
-export const isNoteValid = function (noteName) {
+export const isNoteValid = function (noteName, location) {
   const notesBookmarks = state.notes_bookmarks;
+  const isFolderLocationSame = notesBookmarks.every(
+    (note) => note.folderLocation !== location
+  );
+  const isNameSame = notesBookmarks.every((note) => note.name !== noteName);
 
-  return notesBookmarks.every((note) => note.name !== noteName);
+  if (isNameSame && isFolderLocationSame) return false;
+
+  return true;
 };
 export const updateNoteState = function (noteName, data) {
   state.notes_bookmarks.forEach((note) => {

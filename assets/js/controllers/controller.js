@@ -158,7 +158,7 @@ const controlCreateNote = function (e) {
 
   const newName = form.querySelector("#note-name").value;
   const folderLocation = options.value;
-  const isValid = model.isNoteValid(newName);
+  const isValid = model.isNoteValid(newName, folderLocation);
   if (!isValid) return;
   const noteState = {
     name: newName,
@@ -166,7 +166,11 @@ const controlCreateNote = function (e) {
     data: {},
   };
   model.addToNotesBookmarks(noteState);
-  foldersView.renderFolderNote(noteState);
+  if (
+    folderLocation ===
+    sidebarView.getSidebarElement().querySelector(".tab--selected").innerText
+  )
+    foldersView.renderFolderNote(noteState);
   formView.clearForm();
 };
 const controlCreateNoteForm = function (e) {
