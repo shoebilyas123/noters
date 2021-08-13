@@ -452,6 +452,7 @@ var _editorjsQuote = require("@editorjs/quote");
 var _editorjsQuoteDefault = _parcelHelpers.interopDefault(_editorjsQuote);
 require("@editorjs/checklist");
 require("@editorjs/embed");
+// window.addEventListener("load", View.renderLoadingAnimation);
 if (module.hot) {
   module.hot.accept();
 }
@@ -496,7 +497,6 @@ const controlLocalStorage = function () {
     _viewsCreateFolderViewDefault.default.createNewFolderTab(fol);
   });
 };
-window.addEventListener("load", controlLocalStorage);
 const controlCreateFolderForm = function () {
   _viewsFormViewDefault.default.clearForm();
   _viewsFormViewDefault.default.createFolderForm();
@@ -650,6 +650,7 @@ const init = function () {
   _viewsFoldersViewDefault.default.addHandlerDeleteButton(controlFolderDelete);
 };
 init();
+window.addEventListener("load", controlLocalStorage);
 window.addEventListener("resize", initMobile);
 window.addEventListener("load", initFirstFolder);
 

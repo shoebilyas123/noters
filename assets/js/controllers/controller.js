@@ -11,6 +11,9 @@ import List from "@editorjs/list";
 import Qoute from "@editorjs/quote";
 import Checklist from "@editorjs/checklist";
 import Embed from "@editorjs/embed";
+
+// window.addEventListener("load", View.renderLoadingAnimation);
+
 if (module.hot) {
   module.hot.accept();
 }
@@ -32,7 +35,6 @@ const initFirstFolder = function () {
     .filter((note) => note !== undefined);
   foldersView.renderFolderData(folderData);
 };
-
 const initEditor = function () {
   const savedData = model.getNoteData(documentName);
   editor = new EditorJS({
@@ -61,9 +63,6 @@ const controlLocalStorage = function () {
     createFolderView.createNewFolderTab(fol);
   });
 };
-
-window.addEventListener("load", controlLocalStorage);
-
 const controlCreateFolderForm = function () {
   formView.clearForm();
   formView.createFolderForm();
@@ -241,5 +240,6 @@ const init = function () {
   foldersView.addHandlerDeleteButton(controlFolderDelete);
 };
 init();
+window.addEventListener("load", controlLocalStorage);
 window.addEventListener("resize", initMobile);
 window.addEventListener("load", initFirstFolder);
