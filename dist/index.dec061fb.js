@@ -580,7 +580,7 @@ const controlCreateNote = function (e) {
   const newName = form.querySelector("#note-name").value;
   const folderLocation = options.value;
   const isValid = _modelsModel.isNoteValid(newName, folderLocation);
-  if (!isValid) return;
+  if (isValid) return;
   const noteState = {
     name: newName,
     folderLocation,
@@ -653,7 +653,7 @@ init();
 window.addEventListener("resize", initMobile);
 window.addEventListener("load", initFirstFolder);
 
-},{"../models/model":"34Jm7","../views/createFolderView":"4isxj","../views/formView":"yqQiy","../views/sibebarView":"3DEE0","../views/foldersView":"7b1QR","../views/createNoteView":"U7eNO","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","@editorjs/editorjs":"RKeHJ","../views/noteEditorView":"67O9T","@editorjs/header":"52HMf","@editorjs/list":"5AfE8","@editorjs/quote":"IqCmq","@editorjs/checklist":"7vhMy","@editorjs/embed":"7MPus"}],"34Jm7":[function(require,module,exports) {
+},{"../models/model":"34Jm7","../views/createFolderView":"4isxj","../views/formView":"yqQiy","../views/sibebarView":"3DEE0","../views/foldersView":"7b1QR","../views/createNoteView":"U7eNO","@editorjs/editorjs":"RKeHJ","../views/noteEditorView":"67O9T","@editorjs/header":"52HMf","@editorjs/list":"5AfE8","@editorjs/quote":"IqCmq","@editorjs/checklist":"7vhMy","@editorjs/embed":"7MPus","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"34Jm7":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
 _parcelHelpers.defineInteropFlag(exports);
 _parcelHelpers.export(exports, "state", function () {
@@ -1159,7 +1159,7 @@ class foldersView {
 }
 exports.default = new foldersView();
 
-},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","./createNoteView":"U7eNO"}],"U7eNO":[function(require,module,exports) {
+},{"./createNoteView":"U7eNO","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"U7eNO":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
 _parcelHelpers.defineInteropFlag(exports);
 class createNoteView {

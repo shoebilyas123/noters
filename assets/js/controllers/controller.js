@@ -159,7 +159,7 @@ const controlCreateNote = function (e) {
   const newName = form.querySelector("#note-name").value;
   const folderLocation = options.value;
   const isValid = model.isNoteValid(newName, folderLocation);
-  if (!isValid) return;
+  if (isValid) return;
   const noteState = {
     name: newName,
     folderLocation,
