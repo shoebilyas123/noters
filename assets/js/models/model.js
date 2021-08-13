@@ -43,7 +43,7 @@ export const addNotesToLocalStorage = function (data) {
 export const addToNotesBookmarks = function (data) {
   const newNote = data;
   const notesBookmarks = state.notes_bookmarks;
-  if (!isNoteValid(newNote.name)) return;
+  if (isNoteValid(newNote.name)) return;
 
   state.notes_bookmarks.push(newNote);
   addNotesToLocalStorage(state.notes_bookmarks);
