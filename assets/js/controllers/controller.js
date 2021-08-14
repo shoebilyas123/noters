@@ -63,6 +63,8 @@ const controlLocalStorage = function () {
     createFolderView.createNewFolderTab(fol);
   });
 };
+window.addEventListener("DOMContentLoaded", controlLocalStorage);
+
 const controlCreateFolderForm = function () {
   formView.clearForm();
   formView.createFolderForm();
@@ -152,18 +154,21 @@ const controlNote = function (e) {
 };
 const controlCreateNote = function (e) {
   e.preventDefault();
+
   const form = this.closest(".modal-form");
   const options = form.querySelector("#note-select");
 
   const newName = form.querySelector("#note-name").value;
   const folderLocation = options.value;
   const isValid = model.isNoteValid(newName, folderLocation);
-  if (isValid) return;
+  if (isValid === false) return;
   const noteState = {
     name: newName,
     folderLocation,
     data: {},
   };
+  console.log(noteState);
+
   model.addToNotesBookmarks(noteState);
   if (
     folderLocation ===
@@ -240,6 +245,5 @@ const init = function () {
   foldersView.addHandlerDeleteButton(controlFolderDelete);
 };
 init();
-window.addEventListener("load", controlLocalStorage);
 window.addEventListener("resize", initMobile);
 window.addEventListener("load", initFirstFolder);
