@@ -367,7 +367,7 @@ input {
   height: auto;
 }
 .notes-collection .hiddenImage {
-  display: none;
+  opacity: 0;
 }
 .notes-collection .note {
   height: min-content;

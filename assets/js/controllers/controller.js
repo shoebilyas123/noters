@@ -20,9 +20,9 @@ if (module.hot) {
 let editor, documentName;
 
 const initFirstFolder = function () {
-  const tabName = sidebarView
-    .getSidebarElement()
-    .querySelector(".tab").innerText;
+  let tabName = sidebarView.getSidebarElement().querySelector(".tab");
+  if (!tabName) return;
+  tabName = tabName.textContent;
   sidebarView.renderFirstTab();
   model.state.folder = {
     name: tabName,
@@ -63,7 +63,6 @@ const controlLocalStorage = function () {
     createFolderView.createNewFolderTab(fol);
   });
 };
-window.addEventListener("DOMContentLoaded", controlLocalStorage);
 
 const controlCreateFolderForm = function () {
   formView.clearForm();
@@ -247,3 +246,4 @@ const init = function () {
 init();
 window.addEventListener("resize", initMobile);
 window.addEventListener("load", initFirstFolder);
+document.addEventListener("DOMContentLoaded", controlLocalStorage);

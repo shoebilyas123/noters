@@ -54,7 +54,6 @@ class sidebarView {
     tabsContainer.addEventListener("click", handler);
   }
   getSidebarElement() {
-    console.log(this._parentElement);
     return this._parentElement;
   }
   renderFirstTab() {

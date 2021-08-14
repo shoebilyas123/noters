@@ -1,5 +1,3 @@
-// import { waitFor } from "../helpers";
-
 import createNoteView from "./createNoteView";
 
 class foldersView {
@@ -120,9 +118,10 @@ class foldersView {
     return this._parentElement.querySelector(".menu-btn");
   }
   hideFirstTimeImage() {
-    this._parentElement
-      .querySelector(".first-time-icon")
-      .classList.add("hiddenImage");
+    console.log("Main: ", this._parentElement);
+    // this._parentElement
+    //   .querySelector(".first-time-icon")
+    //   .classList.add("hiddenImage");
   }
   renderFirstTimeImage() {
     this._parentElement

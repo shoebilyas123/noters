@@ -458,7 +458,9 @@ if (module.hot) {
 }
 let editor, documentName;
 const initFirstFolder = function () {
-  const tabName = _viewsSibebarViewDefault.default.getSidebarElement().querySelector(".tab").innerText;
+  let tabName = _viewsSibebarViewDefault.default.getSidebarElement().querySelector(".tab");
+  if (!tabName) return;
+  tabName = tabName.textContent;
   _viewsSibebarViewDefault.default.renderFirstTab();
   _modelsModel.state.folder = {
     name: tabName
@@ -497,7 +499,6 @@ const controlLocalStorage = function () {
     _viewsCreateFolderViewDefault.default.createNewFolderTab(fol);
   });
 };
-window.addEventListener("DOMContentLoaded", controlLocalStorage);
 const controlCreateFolderForm = function () {
   _viewsFormViewDefault.default.clearForm();
   _viewsFormViewDefault.default.createFolderForm();
@@ -654,6 +655,7 @@ const init = function () {
 init();
 window.addEventListener("resize", initMobile);
 window.addEventListener("load", initFirstFolder);
+document.addEventListener("DOMContentLoaded", controlLocalStorage);
 
 },{"../models/model":"34Jm7","../views/createFolderView":"4isxj","../views/formView":"yqQiy","../views/sibebarView":"3DEE0","../views/foldersView":"7b1QR","../views/createNoteView":"U7eNO","@editorjs/editorjs":"RKeHJ","../views/noteEditorView":"67O9T","@editorjs/header":"52HMf","@editorjs/list":"5AfE8","@editorjs/quote":"IqCmq","@editorjs/checklist":"7vhMy","@editorjs/embed":"7MPus","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"34Jm7":[function(require,module,exports) {
 var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
@@ -1028,7 +1030,6 @@ class sidebarView {
     tabsContainer.addEventListener("click", handler);
   }
   getSidebarElement() {
-    console.log(this._parentElement);
     return this._parentElement;
   }
   renderFirstTab() {
@@ -1153,7 +1154,7 @@ class foldersView {
     return this._parentElement.querySelector(".menu-btn");
   }
   hideFirstTimeImage() {
-    this._parentElement.querySelector(".first-time-icon").classList.add("hiddenImage");
+    console.log("Main: ", this._parentElement);
   }
   renderFirstTimeImage() {
     this._parentElement.querySelector(".first-time-icon").classList.remove("hiddenImage");
