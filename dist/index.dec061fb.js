@@ -588,7 +588,6 @@ const controlCreateNote = function (e) {
     folderLocation,
     data: {}
   };
-  console.log(noteState);
   _modelsModel.addToNotesBookmarks(noteState);
   if (folderLocation === _viewsSibebarViewDefault.default.getSidebarElement().querySelector(".tab--selected").innerText) _viewsFoldersViewDefault.default.renderFolderNote(noteState);
   _viewsFormViewDefault.default.clearForm();
@@ -627,9 +626,10 @@ const initMobile = function () {
   const menuBtn = _viewsFoldersViewDefault.default.getMenuIcon();
   const closeBtnSidebar = _viewsSibebarViewDefault.default.getSidebarElement().querySelector(".close-sidebar-icon");
   if (window.innerWidth <= 375) {
-    _viewsFoldersViewDefault.default.renderFirstTimeImage();
+    menuBtn.classList.remove("hiddenMenuBtn");
     closeBtnSidebar.classList.remove("hiddenCloseIcon");
     _viewsFoldersViewDefault.default.addHandlerMenuBtn(controlSidebarMobile);
+    _viewsFoldersViewDefault.default.renderFirstTimeImage();
   } else {
     closeBtnSidebar.classList.add("hiddenCloseIcon");
     menuBtn.classList.add("hiddenMenuBtn");
@@ -1032,6 +1032,9 @@ class sidebarView {
   getSidebarElement() {
     return this._parentElement;
   }
+  getActiveTab() {
+    return this._parentElement.querySelector(".tab--selected");
+  }
   renderFirstTab() {
     const tab = this._parentElement.getElementsByClassName("tab").item(0);
     tab.classList.add("tab--selected");
@@ -1154,7 +1157,7 @@ class foldersView {
     return this._parentElement.querySelector(".menu-btn");
   }
   hideFirstTimeImage() {
-    console.log("Main: ", this._parentElement);
+    this._parentElement.querySelector(".first-time-icon").classList.add("hiddenImage");
   }
   renderFirstTimeImage() {
     this._parentElement.querySelector(".first-time-icon").classList.remove("hiddenImage");

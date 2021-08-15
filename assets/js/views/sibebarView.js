@@ -56,6 +56,9 @@ class sidebarView {
   getSidebarElement() {
     return this._parentElement;
   }
+  getActiveTab() {
+    return this._parentElement.querySelector(".tab--selected");
+  }
   renderFirstTab() {
     const tab = this._parentElement.getElementsByClassName("tab").item(0);
     tab.classList.add("tab--selected");

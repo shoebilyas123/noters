@@ -118,10 +118,9 @@ class foldersView {
     return this._parentElement.querySelector(".menu-btn");
   }
   hideFirstTimeImage() {
-    console.log("Main: ", this._parentElement);
-    // this._parentElement
-    //   .querySelector(".first-time-icon")
-    //   .classList.add("hiddenImage");
+    this._parentElement
+      .querySelector(".first-time-icon")
+      .classList.add("hiddenImage");
   }
   renderFirstTimeImage() {
     this._parentElement

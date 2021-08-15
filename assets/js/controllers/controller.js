@@ -166,7 +166,6 @@ const controlCreateNote = function (e) {
     folderLocation,
     data: {},
   };
-  console.log(noteState);
 
   model.addToNotesBookmarks(noteState);
   if (
@@ -216,10 +215,12 @@ const initMobile = function () {
   const closeBtnSidebar = sidebarView
     .getSidebarElement()
     .querySelector(".close-sidebar-icon");
+
   if (window.innerWidth <= 375) {
-    foldersView.renderFirstTimeImage();
+    menuBtn.classList.remove("hiddenMenuBtn");
     closeBtnSidebar.classList.remove("hiddenCloseIcon");
     foldersView.addHandlerMenuBtn(controlSidebarMobile);
+    foldersView.renderFirstTimeImage();
   } else {
     closeBtnSidebar.classList.add("hiddenCloseIcon");
     menuBtn.classList.add("hiddenMenuBtn");
